@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const csurf = require("csurf");
+const db = require("./db");
 
 app.use(compression());
 
@@ -36,8 +37,60 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
+//===================REGISTRATION AND LOGIN=====================================
 
-//=====================GENERIC ROUTE==============================
+function hashPassword(plainTextPassword) {
+    return new Promise(function(resolve, reject) {
+        bcrypt.genSalt(function(err, salt) {
+            if (err) {
+                return reject(err);
+            }
+            bcrypt.hash(plainTextPassword, salt, function(err, hash) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(hash);
+            });
+        });
+    });
+}
+
+app.post("/register", (req, res) => {
+    console.log("inside register post");
+    console.log("req.body", req.body);
+    const { firstname, lastname, email, password } = req.body;
+    if (!firstname || !lastname || !email || !password) {
+        res.json({
+            success: false,
+            error: "It looks you missed something. Try again!"
+        });
+    } else {
+        hashPassword(password).then(hash => {
+            db
+                .registerUser(firstname, lastname, email, hash)
+                .then(results => {
+                    req.session.user = {
+                        id: results.id,
+                        firstname: results.firstname,
+                        lastname: results.lastname,
+                        email: results.email
+                    };
+                    res.json({
+                        success: true
+                    });
+                })
+                .catch(err => {
+                    console.log("error", err);
+                    res.json({
+                        success: false,
+                        error: "Oups, something went wrong. Try again!"
+                    });
+                });
+        });
+    }
+});
+
+//=====================GENERIC ROUTE============================================
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
