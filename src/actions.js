@@ -12,8 +12,8 @@ export function handleRegistration(e) {
     };
 }
 
-export function registerUser() {
-    return axios.post("/register").then(function({ data }) {
+export function registerUser(userData) {
+    return axios.post("/register", userData).then(function({ data }) {
         console.log("registered user", data);
         return {
             type: "REGISTER_USER",

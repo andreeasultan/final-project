@@ -25,8 +25,9 @@ let router = (
 );
 
 if (location.pathname == "/") {
-    router
+    router;
 } else {
+    console.log("redender App");
     router = elem;
 }
 

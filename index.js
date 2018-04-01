@@ -8,6 +8,8 @@ const bcrypt = require("bcryptjs");
 const csurf = require("csurf");
 const db = require("./db");
 
+
+app.use(express.static("public"));
 app.use(compression());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,6 +28,7 @@ app.use(function(req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
+
 
 if (process.env.NODE_ENV != "production") {
     app.use(
