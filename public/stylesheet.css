@@ -9,7 +9,7 @@ body,
 main {
     width: 100%;
     height: 100vh;
-    background-color: #F7F3F5;
+    background-color: #090754;
 
 }
 .wraper{
@@ -27,10 +27,7 @@ main {
     position: fixed;
     width: 100%;
 }
-.logo-wraper{
-    display: inline-block;
-    text-align: center;
-}
+
 #logo {
     height: 50px;
     width: 50;
@@ -85,7 +82,7 @@ main {
 .wraper-registration{
     background-color: #090754;
     width: 100%;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 60px);
     color: #F7F3F5;
     display: grid;
     grid-template-columns: 50% 50%;
@@ -93,6 +90,8 @@ main {
     align-items: center;
     background-image: url("/image1.jpg");
     background-size: cover;
+    position: relative;
+    top:60px;
 }
 .description {
     width: 70%;
@@ -182,16 +181,15 @@ main {
     color: #F7F3F5;
     width: 100%;
     padding: 10px 0;
-    position: absolute;
+    /*position: absolute;
     bottom: 0;
-    top: auto;
+    top: auto;*/
     font-size: 13px;
 }
 
 .content-wraper{
     background-color: #090754;
-    height: 638px;
-    color: white;
+    color: #F7F3F5;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 5px 1fr;
@@ -239,6 +237,7 @@ main {
     font-weight: 600;
     grid-area: 1/2/2/3;
     margin-top: 50px;
+    letter-spacing: 2px;
 }
 .quote{
     width: 600px;
@@ -246,6 +245,12 @@ main {
     margin-left: 50px;
     margin-top: 150px;
     grid-area: 1/2/2/3;
+    text-align: center;
+}
+.quote h4 {
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
 }
 .quote-generator{
     grid-area: 1/2/2/3;
@@ -296,4 +301,86 @@ main {
     margin-top: 20px;
     display: inline-block;
     vertical-align: top;
+}
+.add-a-book{
+    margin-top: 50px;
+}
+.add-a-book input{
+    width: 300px;
+    height: 25px;
+    margin:10px 10px 10px 0;
+    font-size: 15px;
+}
+
+.add-a-book button {
+    width: 70px;
+    height: 25px;
+    border-radius: 10px;
+    color:#F7F3F5;
+    background-color: #54A8E3;
+    cursor: pointer;
+    font-size: 15px;
+
+}
+.wanna-read-wraper{
+    width: inherit;
+    position: relative;
+    top: 58px;
+    color:#F7F3F5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: scroll;
+    margin-bottom: 50px;
+}
+
+.books-to-read {
+    width: 698px;
+    margin-top: 50px;
+}
+
+.book {
+    display: flex;
+    align-content: space-between;
+    margin-bottom: 30px;
+}
+.book p {
+    margin-top: 30px;
+    border-bottom: 0.5px #F7F3F5 solid;
+    width: 620px;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.book button{
+    display: inline-block;
+    width: 70px;
+    height: 25px;
+    border-radius: 10px;
+    color:#F7F3F5;
+    background-color: #54A8E3;
+    cursor: pointer;
+    font-size: 15px;
+    align-self: flex-end;
+    margin-left: 10px;
+}
+.book img {
+    width: 100px;
+    height: 150px;
+}
+
+.reading-wraper{
+    width: inherit;
+    position: relative;
+    top: 58px;
+    color:#F7F3F5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: scroll;
+    margin-bottom: 50px;
+}
+.reading-wraper h2{
+    padding-top: 50px;
+    padding-bottom: 50px;
 }

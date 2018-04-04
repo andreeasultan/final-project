@@ -1,24 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
-import { finishReadingBook } from "./actions";
 
-class Reading extends React.Component {
+class Read extends React.Component {
     constructor(props) {
         super(props);
     }
-
     render() {
         if(!this.props.books){
             return null;
         }
-        const listOfReadingBooks = this.props.books.map(book=>{
-            if(book.status==2){
+        const listOfFinishedBooks = this.props.books.map(book=>{
+            if(book.status==3){
                 return(
                     <div className="book" key={book.id}>
                         <img src="/magnolia.png" alt=""/>
                         <p>{book.title}, {book.author}</p>
-                        <button>Notes</button>
-                        <button onClick={() =>{this.props.dispatch(finishReadingBook({book}))}}>Finish</button>
+                        <button>Details</button>
                     </div>
                 );
             }
@@ -26,8 +23,8 @@ class Reading extends React.Component {
         });
         return (
             <div className="reading-wraper">
-                <h2>Books you are currently reading:</h2>
-                {listOfReadingBooks}
+                <h2>Books you read:</h2>
+                {listOfFinishedBooks}
             </div>
         );
     }
@@ -38,4 +35,4 @@ const mapStateToProps = state => {
         books: state.books
     };
 };
-export default connect(mapStateToProps)(Reading);
+export default connect(mapStateToProps)(Read);

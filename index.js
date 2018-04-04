@@ -8,7 +8,6 @@ const bcrypt = require("bcryptjs");
 const csurf = require("csurf");
 const db = require("./db");
 
-
 app.use(express.static("public"));
 app.use(compression());
 
@@ -28,7 +27,6 @@ app.use(function(req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
-
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -58,9 +56,30 @@ function hashPassword(plainTextPassword) {
     });
 }
 
+function checkPassword(plainTextPassword, hashedPasswordDb) {
+    return new Promise(function(resolve, reject) {
+        bcrypt.compare(plainTextPassword, hashedPasswordDb, function(
+            err,
+            doesMatch
+        ) {
+            if (err) {
+                console.log("error");
+                reject(err);
+            } else {
+                console.log("success", doesMatch);
+                resolve(doesMatch);
+            }
+        });
+    });
+}
+
+
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
+});
+
 app.post("/register", (req, res) => {
-    console.log("inside register post");
-    console.log("req.body", req.body);
     const { firstname, lastname, email, password } = req.body;
     if (!firstname || !lastname || !email || !password) {
         res.json({
@@ -72,14 +91,17 @@ app.post("/register", (req, res) => {
             db
                 .registerUser(firstname, lastname, email, hash)
                 .then(results => {
+                    console.log("results", results);
                     req.session.user = {
-                        id: results.id,
-                        firstname: results.firstname,
-                        lastname: results.lastname,
-                        email: results.email
+                        id: results[0].id,
+                        firstname: results[0].firstname,
+                        lastname: results[0].lastname,
+                        email: results[0].email
                     };
+                    console.log("req.session.user", req.session.user);
                     res.json({
-                        success: true
+                        success: true,
+                        data: results[0]
                     });
                 })
                 .catch(err => {
@@ -92,6 +114,135 @@ app.post("/register", (req, res) => {
         });
     }
 });
+
+app.post("/login", (req, res) => {
+    const { email, password } = req.body;
+    console.log("req.body", req.body);
+    if (!email || !password) {
+        res.json({
+            success: false,
+            error: "It looks you missed something. Try again!"
+        });
+    } else {
+        db.login(email).then(results => {
+            console.log("login results", results);
+            return checkPassword(password, results[0].hashed_password)
+                .then(doesMatch => {
+                    if (doesMatch) {
+                        req.session.user = {
+                            id: results[0].id,
+                            firstname: results[0].firstname,
+                            lastname: results[0].lastname,
+                            email: results[0].email
+                        };
+                        console.log("login req.session", req.session);
+                        res.json({ success: true });
+                    } else {
+                        res.json({
+                            success: false,
+                            error:
+                                "Your email address or password is not correct. Try again!"
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json({
+                        success: false,
+                        error: "Somehting went wrong. Try again!"
+                    });
+                });
+        });
+    }
+});
+
+//======================GENERATE QUOTE==========================================
+app.get("/inspiration", (req, res) => {
+    db.getInspirationQuote().then(quotes => {
+        let randomNumber = Math.floor(Math.random() * quotes.length);
+        let randomQuote = quotes[randomNumber];
+        res.json({
+            success: true,
+            quote: randomQuote
+        });
+    });
+});
+
+app.get("/motivation", (req, res) => {
+    db.getMotivationQuote().then(quotes => {
+        let randomNumber = Math.floor(Math.random() * quotes.length);
+        let randomQuote = quotes[randomNumber];
+        res.json({
+            success: true,
+            quote: randomQuote
+        });
+    });
+});
+//========================WANNA READ============================================
+app.post("/add-book", (req, res) => {
+    db
+        .addBook(req.session.user.id, req.body.title, req.body.author)
+        .then(book => {
+            console.log("inside index.js book", book);
+            res.json({
+                success: true,
+                book: book
+            });
+        });
+});
+
+app.get("/get-books/", (req, res) => {
+    console.log("req.session.user.id", req.session.user.id);
+    db.getBooks(req.session.user.id).then(books => {
+        console.log("book we got back from db", books);
+        res.json({
+            success: true,
+            books: books
+        });
+    });
+});
+
+app.post("/start-reading", (req, res) => {
+    db.startReading(req.session.user.id, req.body.book.id).then(book => {
+        res.json({
+            success: true,
+            book: book
+        });
+    });
+});
+
+app.get("/get-reading-books", (req, res) => {
+    db.getReadingBooks(req.session.user.id).then(books => {
+        console.log("reading books", books);
+        res.json({
+            success: true,
+            books: books
+        });
+    });
+});
+
+app.post("/finish-reading", (req, res) => {
+    console.log("inside finish-reading");
+    console.log(req.body.book.id);
+    db.finishReadingBook(req.session.user.id, req.body.book.id).then(book => {
+        res.json({
+            success: true,
+            book: book
+        });
+    });
+});
+
+app.get("/get-finished-books", (req, res) => {
+    db.getFinishedBooks(req.session.user.id).then(books => {
+        console.log("finshed books", books);
+        res.json({
+            success: true,
+            books: books
+        });
+    });
+});
+
+
 
 //=====================GENERIC ROUTE============================================
 app.get("*", function(req, res) {

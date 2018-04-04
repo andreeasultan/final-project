@@ -6,39 +6,23 @@ import { registerUser, handleRegistration } from "./actions";
 class Registration extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     firstname: "",
-        //     lastname: "",
-        //     email: "",
-        //     password: ""
-        // };
-        // this.handleRegistration = this.handleRegistration.bind(this);
     }
-    // handleRegistration(e) {
-    //     (this.setSate = {
-    //         [e.target.name]: e.target.value
-    //     }),
-    //     () => console.log("new state", this.state);
-    // }
     render() {
-        const firstname = this.props.newUser.firstname;
-        const lastname = this.props.newUser.lastname;
-        const email = this.props.newUser.email;
-        const password = this.props.newUser.password;
-
-        console.log("rendering");
-        // if (!firstname || !lastname || !email || !password) {
-        //     console.log("rendering null");
-        //     return null;
-        // }
+        console.log("this.props", this.props);
+        if (!this.props) {
+            return null;
+        }
         return (
             <div>
                 <div className="header">
-                    <img src="/my-books.png" alt="" />
+                    <div>
+                        <img id="logo" src="/lotus.png" alt="" />
+                        <p id="logo-text">treasure reads</p>
+                    </div>
                 </div>
                 <div className="wraper-registration">
                     <div className="description">
-                        <h2>A place where my books feel at home.</h2>
+                        <h2>A place where your books feel at home.</h2>
                         <p>
                             Save interesting tittles | Take notes while reading
                             | Return anytime to get inspiration.
@@ -47,15 +31,63 @@ class Registration extends React.Component {
                     <div className="registration-form">
                         <h3>New to treasure reads? Register now!</h3>
                         <form>
-                            <input onChange={this.props.dispatch(handleRegistration())} type="text" placeholder="First Name"/>
-                            <input onChange={this.props.dispatch(handleRegistration())} type="text" placeholder="Last Name"/>
-                            <input onChange={this.props.dispatch(handleRegistration())} type="text" placeholder="Email Address"/>
-                            <input onChange={this.props.dispatch(handleRegistration())} type="text" placeholder="Password"/>
+                            <input
+                                onChange={e => {
+                                    this.props.dispatch(
+                                        handleRegistration(
+                                            e.target.name,
+                                            e.target.value
+                                        )
+                                    );
+                                }}
+                                type="text"
+                                name="firstname"
+                                placeholder="First Name"
+                            />
+                            <input
+                                onChange={e => {
+                                    this.props.dispatch(
+                                        handleRegistration(
+                                            e.target.name,
+                                            e.target.value
+                                        )
+                                    );
+                                }}
+                                type="text"
+                                name="lastname"
+                                placeholder="Last Name"
+                            />
+                            <input
+                                onChange={e => {
+                                    this.props.dispatch(
+                                        handleRegistration(
+                                            e.target.name,
+                                            e.target.value
+                                        )
+                                    );
+                                }}
+                                type="text"
+                                name="email"
+                                placeholder="Email Address"
+                            />
+                            <input
+                                onChange={e => {
+                                    this.props.dispatch(
+                                        handleRegistration(
+                                            e.target.name,
+                                            e.target.value
+                                        )
+                                    );
+                                }}
+                                type="text"
+                                name="password"
+                                placeholder="Password"
+                            />
                             <button
                                 onClick={e => {
                                     e.preventDefault();
                                     this.props.dispatch(
-                                        registerUser(this.state)
+                                        registerUser(this.props)
                                     );
                                 }}
                             >
@@ -73,36 +105,11 @@ class Registration extends React.Component {
     }
 }
 const mapStateToProps = state => {
-    console.log("hello world", state);
     return {
-        newUser: state.newUser || []
+        firstname: state.firstname,
+        lastname: state.lastname,
+        email: state.email,
+        password: state.password
     };
 };
 export default connect(mapStateToProps)(Registration);
-
-
-
-// <input
-//     onChange={this.handleRegistration}
-//     name="firstname"
-//     type="text"
-//     placeholder="First Name"
-// />
-// <input
-//     onChange={this.handleRegistration}
-//     name="lastname"
-//     type="text"
-//     placeholder="Last Name"
-// />
-// <input
-//     onChange={this.handleRegistration}
-//     name="email"
-//     type="text"
-//     placeholder="Email Address"
-// />
-// <input
-//     onChange={this.handleRegistration}
-//     name="password"
-//     type="text"
-//     placeholder="Password"
-// />

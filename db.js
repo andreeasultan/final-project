@@ -3,7 +3,7 @@ let dbUrl = process.env.DATABASE_URL;
 
 if (!dbUrl) {
     var { dbUser, dbPass } = require("./secrets.json");
-    dbUrl = `postgres:${dbUser}:${dbPass}@localhost:5432/socialnetwork`;
+    dbUrl = `postgres:${dbUser}:${dbPass}@localhost:5432/final-project`;
 }
 
 var db = spicedPg(dbUrl);
@@ -20,6 +20,96 @@ function registerUser(firstname, lastname, email, hashed_password) {
         });
 }
 
+function login(typedEmail) {
+    return db
+        .query(`SELECT * FROM users WHERE email=$1`, [typedEmail])
+        .then(function(results) {
+            console.log("inside db", results.rows);
+            return results.rows;
+        });
+}
+
+function getInspirationQuote() {
+    return db
+        .query(`SELECT * FROM quotes WHERE type = 'inspiration'`)
+        .then(function(results) {
+            return results.rows;
+        });
+}
+
+function getMotivationQuote() {
+    return db
+        .query(`SELECT * FROM quotes WHERE type='motivation'`)
+        .then(function(results) {
+            return results.rows;
+        });
+}
+function addBook(userId, title, author) {
+    return db
+        .query(
+            `INSERT INTO books (user_id, status, title, author) VALUES ($1, 1, $2, $3) RETURNING *`,
+            [userId, title, author]
+        )
+        .then(function(results) {
+            return results.rows[0];
+        });
+}
+
+function getBooks(userId) {
+    return db
+        .query(`SELECT * FROM books WHERE user_id = $1 ORDER BY created_at DESC`, [userId])
+        .then(function(results) {
+            return results.rows;
+        });
+}
+
+function startReading(userId, bookId) {
+    return db
+        .query(`UPDATE books SET status=2 WHERE user_id=$1 AND id=$2 RETURNING*`, [
+            userId, bookId
+        ])
+        .then(function(results) {
+            console.log("reading Book", results.rows);
+            return results.rows[0];
+        });
+}
+function getReadingBooks(){
+    return db
+        .query(`SELECT * FROM books WHERE status=2 ORDER BY created_at DESC`)
+        .then(function(results) {
+            return results.rows;
+        });
+
+}
+
+
+function finishReadingBook(userId, bookId) {
+    return db
+        .query(`UPDATE books SET status=3 WHERE user_id=$1 AND id=$2 RETURNING*`, [
+            userId, bookId
+        ])
+        .then(function(results) {
+            console.log("finished Book", results.rows);
+            return results.rows[0];
+        });
+}
+
+function getFinishedBooks(){
+    return db
+        .query(`SELECT * FROM books WHERE status=3 ORDER BY created_at DESC`)
+        .then(function(results) {
+            return results.rows;
+        });
+}
 module.exports = {
-    registerUser
+    registerUser,
+    login,
+    getInspirationQuote,
+    getMotivationQuote,
+    addBook,
+    getBooks,
+    startReading,
+    getReadingBooks,
+    finishReadingBook,
+    getFinishedBooks
 };

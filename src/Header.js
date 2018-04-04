@@ -8,7 +8,7 @@ export default class Header extends React.Component {
     render() {
         return (
             <div className="header">
-                <div classname="logo-wraper">
+                <div className="logo-wraper">
                     <img id="logo" src="/lotus.png" alt=""/>
                     <p id="logo-text">treasure reads</p>
                 </div>
@@ -30,6 +30,7 @@ export default class Header extends React.Component {
                         <Link to="/read">
                             <p>Read</p>
                         </Link>
+                        <p><a href="/logout">Logout</a></p>
                     </nav>
 
                 </div>
