@@ -9,7 +9,12 @@ class Home extends React.Component {
     }
     renderQuote() {
         if (!this.props.quoteObj) {
-            return <div>loading</div>;
+            return (
+                <div>
+                    <h3>"If you only read the books that everyone else is reading, you can only think what everyone else is thinking."</h3>
+                    <h4><em>Haruki Murakami</em></h4>
+                </div>
+            );
         } else {
             return (
                 <div>

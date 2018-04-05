@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS quotes;
 DROP TABLE IF EXISTS books;
+DROP TABLE IF EXISTS notes;
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
@@ -23,9 +24,18 @@ CREATE TABLE books(
     status INTEGER NOT NULL,
     title VARCHAR,
     author VARCHAR,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at DATE DEFAULT CURRENT_DATE,
+    updated_at DATE DEFAULT CURRENT_DATE
 );
 
+CREATE TABLE notes(
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    book_id INTEGER NOT NULL,
+    note VARCHAR,
+    created_at DATE DEFAULT CURRENT_DATE,
+    updated_at DATE DEFAULT CURRENT_DATE
+);
 
 INSERT INTO quotes (type, quote, author) VALUES ('inspiration', 'Books are the quietest and most constant of friends; they are the most accessible and wisest of counselors, and the most patient of teachers.', 'Charles William Eliot');
 INSERT INTO quotes (type, quote, author) VALUES ('motivation', 'Today a reader, tomorrow a leader.', 'Margaret Fuller');

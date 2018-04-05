@@ -73,7 +73,6 @@ function checkPassword(plainTextPassword, hashedPasswordDb) {
     });
 }
 
-
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");
@@ -211,16 +210,6 @@ app.post("/start-reading", (req, res) => {
     });
 });
 
-app.get("/get-reading-books", (req, res) => {
-    db.getReadingBooks(req.session.user.id).then(books => {
-        console.log("reading books", books);
-        res.json({
-            success: true,
-            books: books
-        });
-    });
-});
-
 app.post("/finish-reading", (req, res) => {
     console.log("inside finish-reading");
     console.log(req.body.book.id);
@@ -232,21 +221,35 @@ app.post("/finish-reading", (req, res) => {
     });
 });
 
-app.get("/get-finished-books", (req, res) => {
-    db.getFinishedBooks(req.session.user.id).then(books => {
-        console.log("finshed books", books);
+app.get("/get-notes", (req, res) => {
+    db.getNotes(req.session.user.id).then(notes => {
+        console.log("notes", notes);
         res.json({
             success: true,
-            books: books
+            notes: notes
         });
     });
 });
 
-
+app.post("/save-note/:id", (req, res) => {
+    console.log("req.body", req.body);
+    db
+        .saveNote(req.session.user.id, req.params.id, req.body.note)
+        .then(note => {
+            res.json({
+                success: true,
+                note: note
+            });
+        });
+});
 
 //=====================GENERIC ROUTE============================================
 app.get("*", function(req, res) {
-    res.sendFile(__dirname + "/index.html");
+    // if (!req.session.user) {
+    //     return res.redirect("/");
+    // } else {
+        res.sendFile(__dirname + "/index.html");
+    // }
 });
 
 app.listen(8080, function() {

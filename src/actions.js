@@ -10,7 +10,6 @@ export function handleRegistration(fieldName, fieldValue) {
 
 export function registerUser(userData) {
     return axios.post("/register", userData).then(function({ data }) {
-        console.log("registered user", data);
         if (data.success) {
             location.replace("/home");
         }
@@ -23,7 +22,6 @@ export function registerUser(userData) {
 
 export function loginUser(userData) {
     return axios.post("/login", userData).then(function({ data }) {
-        console.log("logedIn user", data);
         if (data.success) {
             location.replace("/home");
         }
@@ -36,7 +34,6 @@ export function loginUser(userData) {
 
 export function getInspirationQuote() {
     return axios.get("/inspiration").then(function({ data }) {
-        console.log(data);
         return {
             type: "INSPIRATION_QUOTE",
             quote: data.quote
@@ -70,7 +67,6 @@ export function addBook(bookData) {
     });
 }
 
-
 export function getBooks() {
     return axios.get("/get-books").then(function({ data }) {
         console.log("inside get books to read", data.books);
@@ -90,15 +86,6 @@ export function startReading(bookData) {
     });
 }
 
-// export function getReadingBooks() {
-//     return axios.get("/get-reading-books").then(function({ data }) {
-//         return {
-//             type: "GET_READING_BOOKS",
-//             books: data.books
-//         };
-//     });
-// }
-
 export function finishReadingBook(bookData) {
     return axios.post("/finish-reading", bookData).then(function({ data }) {
         return {
@@ -108,11 +95,58 @@ export function finishReadingBook(bookData) {
     });
 }
 
-// export function getFinishedBooks() {
-//     return axios.get("/get-finished-books").then(function({ data }) {
-//         return {
-//             type: "GET_FINISHED_BOOKS",
-//             books: data.books
-//         };
-//     });
-// }
+export function showNotesUploader(bookId) {
+    return {
+        type: "SHOW_NOTES_UPLOADER",
+        bookId: bookId
+    };
+}
+
+export function closeNotesUploader(bookId) {
+    return {
+        type: "CLOSE_NOTES_UPLOADER",
+        bookId: bookId
+    };
+}
+export function getNoteValue(bookId, fieldValue) {
+    return {
+        type: "GET_NOTE_VALUE",
+        bookId:bookId,
+        fieldValue: fieldValue
+    };
+}
+
+export function saveNote(bookId, noteData) {
+    return axios
+        .post("/save-note/" + bookId, {note: noteData})
+        .then(function({ data }) {
+            console.log("data.note", data.note);
+            return {
+                type: "SAVE_NOTE",
+                note: data.note
+            };
+        });
+}
+
+export function getNotes() {
+    return axios.get("/get-notes/").then(function({ data }) {
+        return {
+            type: "GET_NOTES",
+            notes: data.notes
+        };
+    });
+}
+
+export function showDetailsUploader(bookId){
+    return {
+        type: "SHOW_DETAILS_UPLOADER",
+        bookId: bookId
+    };
+}
+
+export function closeDetailsUploader(bookId){
+    return {
+        type: "CLOSE_DETAILS_UPLOADER",
+        bookId: bookId
+    };
+}

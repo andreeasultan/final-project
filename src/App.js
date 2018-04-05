@@ -25,7 +25,7 @@ class App extends React.Component {
                         <Header />
                         <Route exact path="/home" component={Home} />
                         <Route exact path="/wannaread" component={WannaRead} />
-                        <Route exact path="/reading" component={Reading} />
+                        <Route exact path="/reading-now" component={Reading} />
                         <Route exact path="/read" component={Read} />
                     </div>
                 </BrowserRouter>

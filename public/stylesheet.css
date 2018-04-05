@@ -384,3 +384,122 @@ main {
     padding-top: 50px;
     padding-bottom: 50px;
 }
+.notes-container{
+    width: 780px;
+    background-color: #F7F3F5;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    padding-bottom: 30px;
+
+}
+.notes-container p {
+    color:#23B9C6;
+    font-weight: 600;
+    padding-left: 47px;
+    align-self: flex-start;
+}
+
+.take-notes {
+    width: 700px;
+    height: 70px;
+    background-color: #5F7285;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin: 10px 0 20px 0;
+}
+
+.take-notes textarea {
+    width: 600px;
+    height: 40px;
+    background-color: #5F7285;
+    resize: none;
+    border: none;
+    color: #F7F3F5;
+    font-size: 15px;
+    padding: 5px;
+
+}
+
+.take-notes textarea:focus{
+    outline: none
+}
+
+.take-notes button {
+    display: inline-block;
+    width: 70px;
+    height: 25px;
+    border-radius: 10px;
+    color:#5F7285;
+    background-color: #F7F3F5;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.close {
+    float: right;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: #54A8E3;
+    color:#F7F3F5;
+    margin: 15px;
+    align-self: flex-end;
+}
+
+.note {
+    width: 700px;
+    display: flex;
+    justify-content: space-between;
+}
+.note-text {
+    display: inline-block;
+    width: 615px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.note-text p {
+    color:#5F7285;
+    font-size: 15px;
+    padding-left: 0;
+}
+#note-date {
+    font-size: 13px;
+    color: rgba(95,114,133, 0.7)
+}
+.note img {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+}
+.change-note{
+    display: inline-block;
+}
+.details-container {
+    width: 700px;
+    background-color: #F7F3F5;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    padding-bottom: 30px;
+}
+.details-container p{
+    color:#23B9C6;
+    font-size: 15px;
+    align-self: flex-start;
+    padding-left: 20px;
+}
+
+.details {
+    align-self: flex-start;
+    margin-bottom: 10px;
+}
+.details p {
+    color: #5F7285;
+    font-size: 15px;
+}

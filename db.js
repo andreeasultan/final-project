@@ -57,7 +57,10 @@ function addBook(userId, title, author) {
 
 function getBooks(userId) {
     return db
-        .query(`SELECT * FROM books WHERE user_id = $1 ORDER BY created_at DESC`, [userId])
+        .query(
+            `SELECT * FROM books WHERE user_id = $1 ORDER BY created_at DESC`,
+            [userId]
+        )
         .then(function(results) {
             return results.rows;
         });
@@ -65,42 +68,47 @@ function getBooks(userId) {
 
 function startReading(userId, bookId) {
     return db
-        .query(`UPDATE books SET status=2 WHERE user_id=$1 AND id=$2 RETURNING*`, [
-            userId, bookId
-        ])
+        .query(
+            `UPDATE books SET status=2 WHERE user_id=$1 AND id=$2 RETURNING*`,
+            [userId, bookId]
+        )
         .then(function(results) {
             console.log("reading Book", results.rows);
             return results.rows[0];
         });
 }
-function getReadingBooks(){
-    return db
-        .query(`SELECT * FROM books WHERE status=2 ORDER BY created_at DESC`)
-        .then(function(results) {
-            return results.rows;
-        });
-
-}
-
 
 function finishReadingBook(userId, bookId) {
     return db
-        .query(`UPDATE books SET status=3 WHERE user_id=$1 AND id=$2 RETURNING*`, [
-            userId, bookId
-        ])
+        .query(
+            `UPDATE books SET status=3 WHERE user_id=$1 AND id=$2 RETURNING*`,
+            [userId, bookId]
+        )
         .then(function(results) {
             console.log("finished Book", results.rows);
             return results.rows[0];
         });
 }
 
-function getFinishedBooks(){
+function saveNote(userId, bookId, note) {
     return db
-        .query(`SELECT * FROM books WHERE status=3 ORDER BY created_at DESC`)
+        .query(
+            `INSERT INTO notes (user_id, book_id, note) VALUES ($1, $2, $3) RETURNING *`,
+            [userId, bookId, note]
+        )
         .then(function(results) {
-            return results.rows;
+            console.log("single note saved in db",results.rows[0]);
+            return results.rows[0];
         });
 }
+
+function getNotes(userId) {
+    return db.query(`SELECT * FROM notes WHERE user_id=$1`,[userId]).then(function(results) {
+        console.log("inside db", results.rows);
+        return results.rows;
+    });
+}
+
 module.exports = {
     registerUser,
     login,
@@ -109,7 +117,7 @@ module.exports = {
     addBook,
     getBooks,
     startReading,
-    getReadingBooks,
     finishReadingBook,
-    getFinishedBooks
+    saveNote,
+    getNotes
 };

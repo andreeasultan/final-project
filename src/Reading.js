@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { finishReadingBook } from "./actions";
+import { finishReadingBook, showNotesUploader } from "./actions";
+import Notes from "./Notes";
 
 class Reading extends React.Component {
     constructor(props) {
@@ -8,21 +9,41 @@ class Reading extends React.Component {
     }
 
     render() {
-        if(!this.props.books){
+        if (!this.props.books) {
             return null;
         }
-        const listOfReadingBooks = this.props.books.map(book=>{
-            if(book.status==2){
-                return(
-                    <div className="book" key={book.id}>
-                        <img src="/magnolia.png" alt=""/>
-                        <p>{book.title}, {book.author}</p>
-                        <button>Notes</button>
-                        <button onClick={() =>{this.props.dispatch(finishReadingBook({book}))}}>Finish</button>
+        const listOfReadingBooks = this.props.books.map(book => {
+            if (book.status == 2) {
+                return (
+                    <div>
+                        <div className="book" key={book.id}>
+                            <p>
+                                {book.title}, {book.author}
+                            </p>
+                            <button
+                                onClick={() => {
+                                    this.props.dispatch(
+                                        showNotesUploader(book.id)
+                                    );
+                                }}
+                            >
+                                Notes
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    this.props.dispatch(
+                                        finishReadingBook({ book })
+                                    );
+                                }}
+                            >
+                                Finish
+                            </button>
+                        </div>
+                        {book.showNotesUploader && <Notes book={book} />}
                     </div>
                 );
             }
-
         });
         return (
             <div className="reading-wraper">

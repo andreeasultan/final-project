@@ -96,7 +96,7 @@ class Registration extends React.Component {
                         </form>
                         <h4 className="redirect">
                             Already a member? Please
-                            <Link to="/login">log in</Link>
+                            <Link to="/login"> log in</Link>
                         </h4>
                     </div>
                 </div>

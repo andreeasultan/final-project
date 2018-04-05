@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getBookData, addBook, getBooksToRead, startReading } from "./actions";
+// import {reset} from "redux-form";
+
 
 class WannaRead extends React.Component {
     constructor(props) {
@@ -36,7 +38,7 @@ class WannaRead extends React.Component {
             <div className="wanna-read-wraper">
                 <div className="add-a-book">
                     <h2>Add a book you'd like to read:</h2>
-                    <form>
+                    <form onSubmit={()=>this.props.dispatch.reset("add")} name="add">
                         <input
                             onChange={e => {
                                 this.props.dispatch(
