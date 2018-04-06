@@ -55,7 +55,7 @@ class Registration extends React.Component {
                                     );
                                 }}
                                 name="password"
-                                type="text"
+                                type="password"
                                 placeholder="Password"
                             />
                             <button

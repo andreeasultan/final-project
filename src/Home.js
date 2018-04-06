@@ -11,35 +11,49 @@ class Home extends React.Component {
         if (!this.props.quoteObj) {
             return (
                 <div>
-                    <h3>"If you only read the books that everyone else is reading, you can only think what everyone else is thinking."</h3>
-                    <h4><em>Haruki Murakami</em></h4>
+                    <h3>
+                        "If you only read the books that everyone else is
+                        reading, you can only think what everyone else is
+                        thinking."
+                    </h3>
+                    <h4>
+                        <em>Haruki Murakami</em>
+                    </h4>
                 </div>
             );
         } else {
             return (
                 <div>
                     <h3>"{this.props.quoteObj.quote}"</h3>
-                    <h4><em>{this.props.quoteObj.author}</em></h4>
+                    <h4>
+                        <em>{this.props.quoteObj.author}</em>
+                    </h4>
                 </div>
             );
         }
     }
     render() {
-        if (!this.props) {
-            console.log("no props", this.props);
+        if (!this.props || !this.props.user) {
             return null;
         }
-        console.log("this.props.quoteObj", this.props);
+
         return (
             <div className="content-wraper">
                 <div className="card-background">
                     <div className="card-foreground">
-                        <img src="/inspiration.png" alt="" />
+                        <img
+                            src={
+                                this.props.quoteObj.type === "inspiration"
+                                    ? "/inspiration.png"
+                                    : "/motivation.png"
+                            }
+                            alt=""
+                        />
                     </div>
-                    <p>INSPIRATION</p>
+                    <p>{this.props.quoteObj.type.toUpperCase()}</p>
                 </div>
                 <div className="greeting">
-                    <h2>Welcome, Andreea!</h2>
+                    <h2>Welcome, {this.props.user.firstname}!</h2>
                 </div>
                 <div className="quote">{this.renderQuote()}</div>
                 <div className="quote-generator">
@@ -64,25 +78,18 @@ class Home extends React.Component {
                 <div className="recent">
                     <h4>RECENT ACTIVITY</h4>
                     <div className="activity">
-                        <p>
-                            Lorem Ipsum is placeholder text commonly used in the
-                            graphic, print, and publishing industries for
-                            previewing layouts and visual mockups
-                        </p>
+                        <h4>FINISHED A BOOK:</h4>
+                        <p>Why We Sleep: Unlocking the Power of Sleep and Dreams</p>
+                        <p>By Matthew Walker, PhD</p>
                     </div>
                     <div className="activity">
-                        <p>
-                            Lorem Ipsum is placeholder text commonly used in the
-                            graphic, print, and publishing industries for
-                            previewing layouts and visual mockups
-                        </p>
+                        <h4>ADDED A NOTE:</h4>
+                        <p>On book: Leonardo da Vinci</p>
                     </div>
                     <div className="activity">
-                        <p>
-                            Lorem Ipsum is placeholder text commonly used in the
-                            graphic, print, and publishing industries for
-                            previewing layouts and visual mockups;
-                        </p>
+                        <h4>ADDED A BOOK:</h4>
+                        <p>Genghis Khan and the Making of the Modern World</p>
+                        <p>By Jack Weatherford</p>
                     </div>
                 </div>
             </div>
@@ -93,7 +100,7 @@ const mapStateToProps = state => {
     console.log("state inside Home component", state);
     return {
         quoteObj: state.quote,
-        registeredUser: state.registeredUser,
+        user: state.user
     };
 };
 export default connect(mapStateToProps)(Home);

@@ -79,7 +79,7 @@ class Registration extends React.Component {
                                         )
                                     );
                                 }}
-                                type="text"
+                                type="password"
                                 name="password"
                                 placeholder="Password"
                             />

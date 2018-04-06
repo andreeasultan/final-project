@@ -8,7 +8,7 @@ import Read from "./Read";
 import axios from "./axios";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getBooks } from "./actions";
+import { getBooks, getUserInfo } from "./actions";
 
 class App extends React.Component {
     constructor(props) {
@@ -16,6 +16,7 @@ class App extends React.Component {
     }
     componentDidMount() {
         this.props.dispatch(getBooks());
+        this.props.dispatch(getUserInfo());
     }
     render() {
         return (
@@ -27,6 +28,7 @@ class App extends React.Component {
                         <Route exact path="/wannaread" component={WannaRead} />
                         <Route exact path="/reading-now" component={Reading} />
                         <Route exact path="/read" component={Read} />
+                        <Footer/>
                     </div>
                 </BrowserRouter>
             </div>

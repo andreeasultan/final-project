@@ -78,6 +78,13 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
 });
 
+app.get("/", (req, res) => {
+    if (req.session.user) {
+        return res.redirect("/home");
+    } else {
+        res.sendFile(__dirname + "/index.html");
+    }
+});
 app.post("/register", (req, res) => {
     const { firstname, lastname, email, password } = req.body;
     if (!firstname || !lastname || !email || !password) {
@@ -243,13 +250,25 @@ app.post("/save-note/:id", (req, res) => {
         });
 });
 
+app.get("/get-user-info", (req, res) => {
+    db.getUserInfo(req.session.user.id).then(user => {
+        console.log("userInfo", user);
+        res.json({
+            success: true,
+            user
+        });
+    });
+});
+
 //=====================GENERIC ROUTE============================================
 app.get("*", function(req, res) {
-    // if (!req.session.user) {
-    //     return res.redirect("/");
-    // } else {
+    console.log("req.session", req.session);
+    if (!req.session.user) {
+        console.log("string");
+        return res.redirect("/");
+    } else {
         res.sendFile(__dirname + "/index.html");
-    // }
+    }
 });
 
 app.listen(8080, function() {

@@ -17,7 +17,7 @@ class Read extends React.Component {
                     <div>
                         <div className="book" key={book.id}>
                             <p>
-                                {book.title}, {book.author}
+                                {book.title}, by {book.author}
                             </p>
                             <button
                                 onClick={() => {

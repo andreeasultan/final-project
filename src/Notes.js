@@ -19,7 +19,7 @@ class Notes extends React.Component {
                     <div className="note"key={note.id}>
                         <div className="note-text">
                             <p>{note.note}</p>
-                            <p id="note-date">created at: {note.created_at}</p>
+                            <p id="note-date">added on: {note.to_char}</p>
                         </div>
                         <div className="change-note">
                             <img src="/edit.png" alt=""/>
@@ -34,7 +34,7 @@ class Notes extends React.Component {
                 <button onClick={()=>this.props.dispatch(closeNotesUploader(this.props.book.id))} className="close">x</button>
                 <p>ADD A NOTE:</p>
                 <div className="take-notes">
-                    <textarea
+                    <textarea id="notepad"
                         onChange={e => {
                             this.props.dispatch(
                                 getNoteValue(this.props.book.id, e.target.value)

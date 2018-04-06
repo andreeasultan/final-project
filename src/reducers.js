@@ -1,6 +1,14 @@
 import React from "react";
 
-export default function(state = {}, action) {
+var initialState = {
+    quote:{
+        id: null,
+        type: "inspiration",
+        quote: "If you only read the books that everyone else is reading, you can only think what everyone else is thinking.",
+        author: "Haruki Murakami"
+    }
+}
+export default function(state = initialState, action) {
     if (action.type == "USER_DATA") {
         state = Object.assign({}, state, {
             [action.fieldName]: action.fieldValue
@@ -182,7 +190,12 @@ export default function(state = {}, action) {
             })
         };
     }
-
+    if(action.type == "GET_USER_INFO"){
+        state={
+            ...state,
+            user: action.user
+        }
+    }
     console.log("state", state);
     return state;
 }

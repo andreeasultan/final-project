@@ -20,9 +20,7 @@ class WannaRead extends React.Component {
             if (book.status == 1) {
                 return (
                     <div className="book" key={book.id}>
-                        <p>
-                            {book.title}, {book.author}
-                        </p>
+                        <p> {book.title}, by {book.author} </p>
                         <button
                             onClick={() => {
                                 this.props.dispatch(startReading({ book }));
@@ -39,7 +37,7 @@ class WannaRead extends React.Component {
                 <div className="add-a-book">
                     <h2>Add a book you'd like to read:</h2>
                     <form onSubmit={()=>this.props.dispatch.reset("add")} name="add">
-                        <input
+                        <input id="input-one"
                             onChange={e => {
                                 this.props.dispatch(
                                     getBookData(e.target.name, e.target.value)
@@ -49,7 +47,7 @@ class WannaRead extends React.Component {
                             name="title"
                             placeholder="Title"
                         />
-                        <input
+                        <input id="input-two"
                             onChange={e => {
                                 this.props.dispatch(
                                     getBookData(e.target.name, e.target.value)

@@ -10,6 +10,7 @@ export function handleRegistration(fieldName, fieldValue) {
 
 export function registerUser(userData) {
     return axios.post("/register", userData).then(function({ data }) {
+        console.log("registered user", data.data);
         if (data.success) {
             location.replace("/home");
         }
@@ -22,6 +23,7 @@ export function registerUser(userData) {
 
 export function loginUser(userData) {
     return axios.post("/login", userData).then(function({ data }) {
+        console.log("login user", data.data);
         if (data.success) {
             location.replace("/home");
         }
@@ -60,6 +62,8 @@ export function getBookData(fieldName, fieldValue) {
 
 export function addBook(bookData) {
     return axios.post("/add-book", bookData).then(function({ data }) {
+        document.querySelector('#input-one').value = "";
+        document.querySelector('#input-two').value = "";
         return {
             type: "ADD_BOOK",
             addedBook: data.book
@@ -121,6 +125,7 @@ export function saveNote(bookId, noteData) {
         .post("/save-note/" + bookId, {note: noteData})
         .then(function({ data }) {
             console.log("data.note", data.note);
+            document.querySelector('#notepad').value = "";
             return {
                 type: "SAVE_NOTE",
                 note: data.note
@@ -149,4 +154,12 @@ export function closeDetailsUploader(bookId){
         type: "CLOSE_DETAILS_UPLOADER",
         bookId: bookId
     };
+}
+export function getUserInfo(){
+    return axios.get("/get-user-info").then(function ({data}) {
+        return {
+            type: "GET_USER_INFO",
+            user: data.user
+        };
+    });
 }

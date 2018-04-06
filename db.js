@@ -58,7 +58,7 @@ function addBook(userId, title, author) {
 function getBooks(userId) {
     return db
         .query(
-            `SELECT * FROM books WHERE user_id = $1 ORDER BY created_at DESC`,
+            `SELECT id, user_id, status, title, author, to_char(created_at, 'dd.mm.yyyy'), to_char(updated_at, 'dd.mm.yyyy') FROM books WHERE user_id = $1 ORDER BY created_at DESC`,
             [userId]
         )
         .then(function(results) {
@@ -97,16 +97,28 @@ function saveNote(userId, bookId, note) {
             [userId, bookId, note]
         )
         .then(function(results) {
-            console.log("single note saved in db",results.rows[0]);
+            console.log("single note saved in db", results.rows[0]);
             return results.rows[0];
         });
 }
 
 function getNotes(userId) {
-    return db.query(`SELECT * FROM notes WHERE user_id=$1`,[userId]).then(function(results) {
-        console.log("inside db", results.rows);
-        return results.rows;
-    });
+    return db
+        .query(
+            `SELECT id, user_id, book_id, note, to_char(created_at, 'dd.mm.yyyy'), to_char(updated_at, 'dd.mm.yyyy') FROM notes WHERE user_id=$1`,
+            [userId]
+        )
+        .then(function(results) {
+            console.log("inside db", results.rows);
+            return results.rows;
+        });
+}
+function getUserInfo(userId) {
+    return db
+        .query(`SELECT * FROM users WHERE id=$1`, [userId])
+        .then(function(results) {
+            return results.rows[0];
+        });
 }
 
 module.exports = {
@@ -119,5 +131,6 @@ module.exports = {
     startReading,
     finishReadingBook,
     saveNote,
-    getNotes
+    getNotes,
+    getUserInfo
 };

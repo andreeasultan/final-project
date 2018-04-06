@@ -30,7 +30,7 @@ export default class Header extends React.Component {
                         <Link to="/read">
                             <p>Read</p>
                         </Link>
-                        <p><a href="/logout">Logout</a></p>
+                        <a href="/logout"><p>Logout</p></a>
                     </nav>
 
                 </div>

@@ -18,7 +18,7 @@ class Details extends React.Component {
                 return (
                     <div className= "details">
                         <p>{note.note}</p>
-                        <p id="note-date">{note.updated_at}</p>
+                        <p id="note-date">added on: {note.to_char}</p>
                     </div>
                 );
             }
@@ -27,9 +27,8 @@ class Details extends React.Component {
         return (
             <div className="details-container">
                 <button onClick={()=>this.props.dispatch(closeDetailsUploader(this.props.book.id))} className="close">x</button>
-                <p className="date">BOOK FINISHED ON: {this.props.book.updated_at} </p>
+                <p className="date">BOOK FINISHED ON: {this.props.book.to_char} </p>
                 <p>YOUR NOTES:</p>
-
                 {details}
             </div>
         );
